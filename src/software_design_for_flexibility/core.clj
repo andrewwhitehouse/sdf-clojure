@@ -117,3 +117,29 @@
 ;; However it would be easy enough for the caller simply to specify the number of expected arguments. The key question
 ;; I have is how much benefit the arity restriction actually gives us above simply calling the functions and seeing
 ;; whether or not they behave as expected (with automated tests).
+
+(defn get-arity [f]
+    (-> f meta :arity))
+
+(defn restrict-arity [f nargs]
+  (with-meta f {:arity nargs}))
+
+(defn spread-apply [f g]
+  (let [n (get-arity f)
+        m (get-arity g)
+        t (+ n m)
+        the-combination (fn [& args]
+                          (assert (= (count args) t))
+                          (list (apply f (take n args))
+                                  (apply g (drop n args))))]
+    (restrict-arity the-combination t)))
+
+(defn spread-combine-2 [h f g]
+  (comp h (spread-apply f g)))
+
+#_((spread-combine-2 list
+                     (restrict-arity (fn [x y] (list 'foo x y)) 2)
+                     (restrict-arity (fn [u v w] (list 'bar u v w)) 3))
+                     'a 'b 'c 'd 'e)
+
+;; Currently this is nested too deeply
