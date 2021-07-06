@@ -85,3 +85,35 @@
                  (restrict-arity (fn [x y] (list 'foo x y)) 2)
                  (fn [u v w] (list 'bar u v w)))
     'a 'b 'c 'd 'e)
+
+;; The SDF code dealing with expected arity is problematic, because retrieving it from
+;; function metadata doesn't seem to work reliably. It's attached to the var ... how do we
+;; get the expected arity of a function?
+
+#_(defn get-arity [f]
+  (-> (var f) meta :arglist))
+
+;; It seems much simpler to explicity specify the expected arity when it's needed
+
+#_(defn spread-combine [h f g]
+     (let [n (get-arity f)]
+         (defn the-combination [& args]
+             (h (apply f (take n args))
+                (apply g (drop n args))))
+         the-combination))
+
+;; in this case we need the arity to determine how many of the arguments to pass to f, and how many to g.
+;; So this works.
+
+#_((spread-combine list
+                 (restrict-arity (fn [x y] (list 'foo x y)) 2)
+                 (fn [u v w] (list 'bar u v w)))
+    'a 'b 'c 'd 'e)
+
+;; The other aspect of this, is "advertising" the arity of a function. In Clojure this can be done
+;; use clojure.repl/doc.
+
+;; A key point seems to be that spread-combine doesn't have knowledge of how the functions are defined (thereby making it more flexible).
+;; However it would be easy enough for the caller simply to specify the number of expected arguments. The key question
+;; I have is how much benefit the arity restriction actually gives us above simply calling the functions and seeing
+;; whether or not they behave as expected (with automated tests).
