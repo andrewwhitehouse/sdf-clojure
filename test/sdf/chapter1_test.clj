@@ -7,4 +7,8 @@
      (let [compose-f (compose
                         (fn [x] (list 'foo x))
                         (fn [x] (list 'bar x)))]
-          (is (= '(foo (bar z)) (compose-f 'z))))))
+          (is (= '(foo (bar z)) (compose-f 'z)))))
+
+  (testing "my-iterate"
+     (let [square (fn [x] (* x x))]
+          (is (= 390625 (((my-iterate 3) square) 5))))) )
