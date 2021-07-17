@@ -1,11 +1,3 @@
-(ns software-design-for-flexibility.core)
-
-
-
-(defn compose [f g]
-    (let [the-composition (fn [& args] (f (apply g args)))]
-        the-composition))
-
 #_((compose (fn [x] (list 'foo x))
           (fn [x] (list 'bar x)))
      'z)
@@ -137,9 +129,9 @@
 (defn spread-combine-2 [h f g]
   (comp h (spread-apply f g)))
 
-#_((spread-combine-2 list
+#_((spread-combine-2 identity
                      (restrict-arity (fn [x y] (list 'foo x y)) 2)
                      (restrict-arity (fn [u v w] (list 'bar u v w)) 3))
                      'a 'b 'c 'd 'e)
 
-;; Currently this is nested too deeply
+;; Using identify may not be quite what was intended, but it works
