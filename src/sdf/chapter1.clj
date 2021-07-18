@@ -22,3 +22,16 @@
       (h (apply f (take n args))
          (apply g (drop n args))))
     the-combination))
+
+(defn spread-apply [f g]
+  (let [n (get-arity f)
+        m (get-arity g)
+        t (+ n m)
+        the-combination (fn [& args]
+                          (assert (= (count args) t))
+                          (list (apply f (take n args))
+                                (apply g (drop n args))))]
+    (restrict-arity the-combination t)))
+
+(defn spread-combine-2 [h f g]
+  (comp h (spread-apply f g)))

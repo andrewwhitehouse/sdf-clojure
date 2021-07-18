@@ -23,4 +23,11 @@
            ((spread-combine list
                             (restrict-arity (fn [x y] (list 'foo x y)) 2)
                             (fn [u v w] (list 'bar u v w)))
+            'a 'b 'c 'd 'e))))
+
+  (testing "spread-combine v2"
+    (is (= '((foo a b) (bar c d e))
+           ((spread-combine-2 identity
+                              (restrict-arity (fn [x y] (list 'foo x y)) 2)
+                              (restrict-arity (fn [u v w] (list 'bar u v w)) 3))
             'a 'b 'c 'd 'e)))))
