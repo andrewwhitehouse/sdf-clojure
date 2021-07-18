@@ -1,20 +1,4 @@
-#_((compose (fn [x] (list 'foo x))
-          (fn [x] (list 'bar x)))
-     'z)
 
-;; ---------------------------------------------------
-
-(defn my-iterate [n]
-      (fn [f]
-          (if (zero? n)
-            identity
-            (compose f ((my-iterate (dec n)) f)))))
-
-(defn square [x] (* x x ))
-
-#_(((my-iterate 3) square) 5)
-
-;; ---------------------------------------------------
 
 (defn parallel-combine [h f g]
     (defn the-combination [& args]

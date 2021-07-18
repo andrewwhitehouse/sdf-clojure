@@ -9,3 +9,9 @@
           (if (zero? n)
             identity
             (compose f ((my-iterate (dec n)) f)))))
+
+(defn get-arity [f]
+    (-> f meta :arity))
+
+(defn restrict-arity [f nargs]
+  (with-meta f {:arity nargs}))

@@ -11,4 +11,9 @@
 
   (testing "my-iterate"
      (let [square (fn [x] (* x x))]
-          (is (= 390625 (((my-iterate 3) square) 5))))) )
+        (is (= 390625 (((my-iterate 3) square) 5)))))
+
+  (testing "arity"
+     (let [nargs 3
+           f (restrict-arity (fn [& x] x) nargs)]
+       (is (= nargs (get-arity f))))) )
