@@ -16,4 +16,11 @@
   (testing "arity"
      (let [nargs 3
            f (restrict-arity (fn [& x] x) nargs)]
-       (is (= nargs (get-arity f))))) )
+       (is (= nargs (get-arity f)))))
+
+  (testing "spread-combine"
+      (is (= '((foo a b) (bar c d e))
+             ((spread-combine list
+                (restrict-arity (fn [x y] (list 'foo x y)) 2)
+                (fn [u v w] (list 'bar u v w)))
+              'a 'b 'c 'd 'e)))) )
