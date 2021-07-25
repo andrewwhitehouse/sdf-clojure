@@ -35,3 +35,13 @@
 
 (defn spread-combine-2 [h f g]
   (comp h (spread-apply f g)))
+
+(defn discard-argument [i]
+  (assert (nat-int? i))
+  (fn [f]
+    (let [m (inc (get-arity f))]
+      (defn the-combination [& args]
+        (assert (= (count args) m))
+        (apply f (->> args (take i) (drop 1))))
+      (assert (< i m))
+      (restrict-arity the-combination m))))
