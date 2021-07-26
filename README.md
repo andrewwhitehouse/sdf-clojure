@@ -1,14 +1,14 @@
-# software-design-for-flexibility
+# Software Design for Flexibility
 
-A Clojure library designed to ... well, that part is up to you.
+Clojuse translations of Schema examples in the 2021 book.
 
 ## Usage
 
-FIXME
+lein test
 
 ## License
 
-Copyright © 2021 FIXME
+Copyright © 2021 Andrew Whitehouse
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
