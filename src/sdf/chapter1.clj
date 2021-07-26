@@ -45,3 +45,13 @@
         (apply f (->> args (take i) (drop 1))))
       (assert (< i m))
       (restrict-arity the-combination m))))
+
+(defn curry-argument [i]
+  (fn [& args]
+    (fn [f]
+      (assert (= (count args) (dec (get-arity f))))
+      (fn [x]
+        (apply f
+               (concat (take i args)
+                       [x]
+                       (drop i args)))))))

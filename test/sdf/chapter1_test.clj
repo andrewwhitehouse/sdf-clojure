@@ -32,7 +32,7 @@
                               (restrict-arity (fn [u v w] (list 'bar u v w)) 3))
             'a 'b 'c 'd 'e))))
 
-  (testing "discard-argument"
-    (let [f (restrict-arity (fn [x y z] (list 'foo x y z)) 3)]
-      (is (= '(foo a b d))
-          ((discard-argument 2) f)))))
+  (testing "curry-argument"
+    (let [f (restrict-arity (fn [x y z w] (list 'foo x y z w)) 4)]
+      (is (= '(foo a b d c)
+             ((((curry-argument 2) 'a 'b 'c) f) 'd))))))
