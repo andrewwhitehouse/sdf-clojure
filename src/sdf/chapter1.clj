@@ -55,3 +55,16 @@
                (concat (take i args)
                        [x]
                        (drop i args)))))))
+
+(defn make-permutation [permspec]
+  (let [the-permuter (fn [lst]
+                       (map (fn [p] (nth lst p)) permspec))]
+    the-permuter))
+
+(defn permute-arguments [& permspec]
+  (let [permute (make-permutation permspec)]
+    (fn [f]
+      (let [the-combination (fn [& args] (apply f (permute args)))
+            n (get-arity f)]
+        (assert (= n (count permspec)))
+        (restrict-arity the-combination n)))))

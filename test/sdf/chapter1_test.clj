@@ -35,4 +35,10 @@
   (testing "curry-argument"
     (let [f (restrict-arity (fn [x y z w] (list 'foo x y z w)) 4)]
       (is (= '(foo a b d c)
-             ((((curry-argument 2) 'a 'b 'c) f) 'd))))))
+             ((((curry-argument 2) 'a 'b 'c) f) 'd)))))
+
+  (testing "permute-arguments"
+    (is (= '(foo b c a d)
+           (((permute-arguments 1 2 0 3)
+             (restrict-arity (fn [x y z w] (list 'foo x y z w)) 4))
+            'a 'b 'c 'd)))))
