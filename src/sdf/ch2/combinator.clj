@@ -1,4 +1,4 @@
-(ns sdf.chapter1)
+(ns sdf.ch2.combinator)
 
 (defn compose [f g]
   (let [the-composition (fn [& args] (f (apply g args)))]

@@ -1,6 +1,6 @@
-(ns sdf.chapter1-test
+(ns sdf.ch2.combinator-test
   (:require [clojure.test :refer :all]
-            [sdf.chapter1 :refer :all]))
+            [sdf.ch2.combinator :refer :all]))
 
 (deftest chapter1-tests
   (testing "compose"
