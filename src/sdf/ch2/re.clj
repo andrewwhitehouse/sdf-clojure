@@ -26,16 +26,20 @@
   (r:seq
    (list->string
     (map (fn [ch]
-                  (if (contains? chars-needing-quoting ch)
-                    (str \\ ch)
-                    (str ch)))
-                (string->list s)))))
+           (if (contains? chars-needing-quoting ch)
+             (str \\ ch)
+             (str ch)))
+         (string->list s)))))
 
-  (comment
+;; pair? https://cs.brown.edu/courses/csci1730/2008/Manual/guide/Pairs__Lists__and_Scheme_Syntax.html
 
-           (r:seq (r:quote "a") r:dot (r:quote "c"))
+(defn ^:private pair? [coll]
+  (and (seq? coll) (not (empty? coll))))
 
-           (def re (r:seq (r:quote "a") r:dot (r:quote "c")))
-             (println (re-matches (str "#" re) "abc"))
-
-           )
+(defn r:alt [& exprs]
+  (if (pair? exprs)
+    (apply r:seq
+           (cons (first exprs)
+                 (map (fn [expr] (str "\\|" expr))
+                      (rest exprs))))
+    (r:seq)))
